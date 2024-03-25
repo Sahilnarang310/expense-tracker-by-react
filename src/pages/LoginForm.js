@@ -48,6 +48,7 @@ const LoginForm = () => {
       console.log(response);
       const {email,idToken}=response.data;
       localStorage.setItem("token", response?.data?.idToken);
+      localStorage.setItem("email", response?.data?.email);
       cleanForm()
       setIsSubmit(false);
       if(isSign){

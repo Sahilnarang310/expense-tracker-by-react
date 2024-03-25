@@ -1,29 +1,38 @@
 import axios from "axios";
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const nameRef = useRef();
   const picUrlRef = useRef();
-
-  useEffect(async()=>{
-    const response = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.REACT_APP_FIREBASE_API}`,
-      {
-       idToken: localStorage.getItem("token"),
+  // const [isVerify,setIsVerify]=useState();
+  const token=localStorage.getItem("token")
+const history = useNavigate();
+  useEffect(() => {
+    async function fetchData() {
+      if (!token) {
+        history("/");
+      } else {
+        const response = await axios.post(
+          `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API}`,
+          {
+            idToken: token,
+          }
+        );
+        nameRef.current.value = response.data.users[0].displayName;
+        picUrlRef.current.value = response.data.users[0].photoUrl;
       }
-    );
-    const verifyEmail = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_FIREBASE_API}`,
-      {
-        idToken: localStorage.getItem("token"),
-        requestType: "VERIFY_EMAIL",
-      },
-    );
-    console.log(response);
-    console.log(verifyEmail);
-   nameRef.current.value = response.data.displayName;
-   picUrlRef.current.value = response.data.photoUrl;
-  },[])
+    }
+    fetchData();
+    // const verifyEmail = await axios.post(
+    //   `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_FIREBASE_API}`,
+    //   {
+    //     idToken: localStorage.getItem("token"),
+    //     requestType: "VERIFY_EMAIL",
+    //   },
+    // );
+    return;
+  }, [history, token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -71,7 +80,7 @@ const Profile = () => {
         <div>
           <button
             type="submit"
-            className="rounded px-1  m-2 bg-red-400 text-white"
+            className="rounded p-1  m-2 bg-red-400 text-white"
             onClick={(e) => submitHandler(e)}
           >
             Update
