@@ -7,7 +7,7 @@ const AuthContext = React.createContext({
   isFillProfile: false,
   isShowProfile: false,
   username: "",
-  profile_url: "",
+  picUrl: "",
   fillProfile: (username, picUrl) => {},
   login: (email, token) => {},
   showProfile: () => {},

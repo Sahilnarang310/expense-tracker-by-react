@@ -1,9 +1,85 @@
-import React from 'react'
+import axios from "axios";
+import React, { useEffect, useRef } from "react";
 
 const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
-}
+  const nameRef = useRef();
+  const picUrlRef = useRef();
 
-export default Profile
+  useEffect(async()=>{
+    const response = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.REACT_APP_FIREBASE_API}`,
+      {
+       idToken: localStorage.getItem("token"),
+      }
+    );
+    const verifyEmail = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_FIREBASE_API}`,
+      {
+        idToken: localStorage.getItem("token"),
+        requestType: "VERIFY_EMAIL",
+      },
+    );
+    console.log(response);
+    console.log(verifyEmail);
+   nameRef.current.value = response.data.displayName;
+   picUrlRef.current.value = response.data.photoUrl;
+  },[])
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const response = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.REACT_APP_FIREBASE_API}`,
+      {
+        idToken: localStorage.getItem("token"),
+        displayName: nameRef.current.value,
+        photoUrl: picUrlRef.current.value,
+        returnSecureToken: true,
+      }
+    );
+    console.log(response);
+    nameRef.current.value = "";
+    picUrlRef.current.value = "";
+  };
+  return (
+    <div className="mt-14 grid place-items-end">
+      <form>
+        <div className="flex justify-between m-2">
+          <h2 className="text-2xl  font-bold">Contact details</h2>
+          <button
+            type="button"
+            className="rounded border-2 px-1 border-red-300 text-red-600"
+          >
+            Cancel
+          </button>
+        </div>
+        <label className="ms-10" htmlFor="username">
+          Full name:{" "}
+        </label>
+        <input
+          ref={nameRef}
+          id="username"
+          className="border-2 rounded mx-8"
+          type="text"
+        />
+        <label htmlFor="picUrl">Profile Photo Pic: </label>
+        <input
+          ref={picUrlRef}
+          id="picUrl"
+          className="border-2 rounded mx-8"
+          type="text"
+        />
+        <div>
+          <button
+            type="submit"
+            className="rounded px-1  m-2 bg-red-400 text-white"
+            onClick={(e) => submitHandler(e)}
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default Profile;

@@ -8,7 +8,7 @@ const defaultValues = {
   isFillProfile: false,
   isShowProfile: false,
   username: "",
-  profile_url: "",
+  picUrl: "",
 };
 const reducerFxn=(state,action)=>{
     if(action.type==='LOGIN'){
