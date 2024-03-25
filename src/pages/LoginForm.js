@@ -2,15 +2,18 @@ import { useState, useRef } from "react";
 
 import classes from "./Login.module.css";
 import axios from "axios";
+import { useAuth } from "../store/auth-context";
 
 const LoginForm = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const authCtx=useAuth()
+  const [isSign, setIsSign] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
+  const cpasswordRef = useRef();
 
   const switchAuthModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
+    setIsSign((prevState) => !prevState);
   };
   const submithandler = async (e) => {
     e.preventDefault();
@@ -21,7 +24,7 @@ const LoginForm = () => {
       email: emailRef.current.value,
       returnSecureToken: true,
     };
-    if (isLogin) {
+    if (isSign) {
       url =
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCxu324ZjtUtZVu_vfKSLRfZHtGouSdclo";
     } else {
@@ -30,16 +33,20 @@ const LoginForm = () => {
     }
     const response = await axios.post(url, obj);
     console.log(response);
+    const {email,idToken}=response.data;
     localStorage.setItem("token", response?.data?.idToken);
 
     passwordRef.current.value = "";
     emailRef.current.value = "";
     setIsSubmit(false);
+    if(isSign){
+      authCtx.login(email,idToken);
+    }
   };
 
   return (
     <section className={classes.auth}>
-      <h1>{isLogin ? "Login" : "Sign Up"}</h1>
+      <h1>{isSign ? "Login" : "Sign Up"}</h1>
       <form onSubmit={submithandler}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
@@ -49,10 +56,10 @@ const LoginForm = () => {
           <label htmlFor="password">Your Password</label>
           <input ref={passwordRef} type="password" id="password" required />
         </div>
-        {!isLogin && (
+        {!isSign && (
           <div className={classes.control}>
             <label htmlFor="cpassword">Confirm Password</label>
-            <input ref={passwordRef} type="password" id="cpassword" required />
+            <input ref={cpasswordRef} type="password" id="cpassword" required />
           </div>
         )}
         <div className={classes.actions}>
@@ -60,10 +67,10 @@ const LoginForm = () => {
             <button className={classes.toggle}>requesting sending</button>
           ) : (
             <button type="submit">
-              {isLogin ? "Login" : "Create account"}
+              {isSign ? "Login" : "Create account"}
             </button>
           )}
-          {isLogin && (
+          {isSign && (
             <button type="button" className={` ${classes.toggle} underline`}>
               Forget password
             </button>
@@ -73,7 +80,7 @@ const LoginForm = () => {
             className={classes.toggle}
             onClick={switchAuthModeHandler}
           >
-            {isLogin ? "Create new account" : "Login with existing account"}
+            {isSign ? "Create new account" : "Login with existing account"}
           </button>
         </div>
       </form>

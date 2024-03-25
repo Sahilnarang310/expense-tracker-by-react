@@ -5,15 +5,20 @@ const defaultValues = {
   isLogin: false,
   email: "",
   token: "",
+  isFillProfile: false,
+  isShowProfile: false,
   username: "",
-  picUrl: "",
+  profile_url: "",
 };
 const reducerFxn=(state,action)=>{
     if(action.type==='LOGIN'){
         return {...state , email:action.email,token:action.token,isLogin:!!action.token}
     }
     if(action.type==='PROFILE'){
-        return {...state , username:action.username,picUrl:action.picUrl}
+        return {...state , username:action.username,picUrl:action.picUrl, isFillProfile:!!action.username}
+    }
+    if (action.type === "ISSHOWPROFILE") {
+      return { ...state, isShowProfile: true};
     }
     if(action.type==='LOGOUT'){
         return defaultValues;
@@ -31,6 +36,9 @@ const AuthProvider = (props) => {
     const fillProfile=(username,picUrl)=>{
         dispachAuth({type:"PROFILE",username,picUrl});
     }
+    const showProfile=()=>{
+        dispachAuth({type:"ISSHOWPROFILE"});
+    }
   return (
     <AuthContext.Provider
       value={{
@@ -39,9 +47,12 @@ const AuthProvider = (props) => {
         token: authState.token,
         username: authState.username,
         picUrl: authState.picUrl,
+        isFillProfile: authState.isFillProfile,
+        isShowProfile: authState.isShowProfile,
         fillProfile,
         login,
         logout,
+        showProfile,
       }}
     >
       {props.children}
