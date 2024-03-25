@@ -7,7 +7,7 @@ import {  useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const authCtx=useAuth()
-  let history = useNavigate();;
+  let navigate = useNavigate();;
   const [isSign, setIsSign] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const emailRef = useRef();
@@ -19,6 +19,9 @@ const LoginForm = () => {
     if(!isSign)
     cpasswordRef.current.value=""
   }
+  const switchForgetPageHandler = () => {
+    navigate("/forget");
+  };
   const switchAuthModeHandler = () => {
     setIsSign((prevState) => !prevState);
   };
@@ -53,7 +56,7 @@ const LoginForm = () => {
       setIsSubmit(false);
       if(isSign){
         authCtx.login(email,idToken);
-        history("/home");
+        navigate("/home");
       }
     } catch (error) {
      console.log(error); 
@@ -85,12 +88,14 @@ const LoginForm = () => {
           {isSubmit ? (
             <button className={classes.toggle}>requesting sending</button>
           ) : (
-            <button type="submit">
-              {isSign ? "Login" : "Create account"}
-            </button>
+            <button type="submit">{isSign ? "Login" : "Create account"}</button>
           )}
           {isSign && (
-            <button type="button" className={` ${classes.toggle} underline`}>
+            <button
+              type="button"
+              onClick={switchForgetPageHandler}
+              className={` ${classes.toggle} underline`}
+            >
               Forget password
             </button>
           )}

@@ -7,11 +7,13 @@ import {
 import LoginForm from "../pages/LoginForm";
 import Layout from "../components/Layout";
 import Home from "../pages/Home";
+import ForgetPassword from "../pages/ForgetPassword";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<LoginForm />} />
+      <Route path="/forget" element={<ForgetPassword />} />
       <Route path="/home" element={<Layout />}>
         <Route path="" element={<Home />} />
       </Route>
