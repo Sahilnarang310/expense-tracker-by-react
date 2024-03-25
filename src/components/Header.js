@@ -10,7 +10,7 @@ const Header = () => {
     authCtx.logout();
   }
   return (
-    <div className="text-center flex justify-between p-3 bg-slate-700 text-yellow-100">
+    <div className="text-center  flex justify-between p-3 bg-slate-700 text-yellow-100">
       <h2 className="text-4xl">Finance focus</h2>
       {!authCtx.isFillProfile && (
         <p className="">

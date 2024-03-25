@@ -5,13 +5,15 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const nameRef = useRef();
   const picUrlRef = useRef();
-  // const [isVerify,setIsVerify]=useState();
   const token=localStorage.getItem("token")
-const history = useNavigate();
+const navigate = useNavigate();
+const expensePageHandler=()=>{
+  navigate('expense');
+}
   useEffect(() => {
     async function fetchData() {
       if (!token) {
-        history("/");
+        navigate("/");
       } else {
         const response = await axios.post(
           `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API}`,
@@ -24,15 +26,8 @@ const history = useNavigate();
       }
     }
     fetchData();
-    // const verifyEmail = await axios.post(
-    //   `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_FIREBASE_API}`,
-    //   {
-    //     idToken: localStorage.getItem("token"),
-    //     requestType: "VERIFY_EMAIL",
-    //   },
-    // );
     return;
-  }, [history, token]);
+  }, [navigate, token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -57,6 +52,7 @@ const history = useNavigate();
           <button
             type="button"
             className="rounded border-2 px-1 border-red-300 text-red-600"
+            onClick={expensePageHandler}
           >
             Cancel
           </button>
