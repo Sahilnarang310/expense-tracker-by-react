@@ -3,8 +3,8 @@
   width: 95%;
   max-width: 25rem;
   border-radius: 6px;
-  background-color: #251f29;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  background-color: rgb(51 65 85 );
+  box-shadow: 0 1px 4px rgba(0, 0, 5);
   padding: 1rem;
   text-align: center;
 }
