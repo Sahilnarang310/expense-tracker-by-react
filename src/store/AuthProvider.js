@@ -9,6 +9,7 @@ const defaultValues = {
   isShowProfile: false,
   username: "",
   picUrl: "",
+  expenses:[],
   isEmailVerified: false,
 };
 const reducerFxn = (state, action) => {
@@ -36,6 +37,9 @@ const reducerFxn = (state, action) => {
     localStorage.clear();
     return defaultValues;
   }
+  if (action.type === "ADD") {
+    return { ...state, expenses: [...state.expenses, { ...action.expense }] };
+  }
   return defaultValues;
 };
 const AuthProvider = (props) => {
@@ -45,6 +49,9 @@ const AuthProvider = (props) => {
   };
   const logout = () => {
     dispachAuth({ type: "LOGOUT", });
+  };
+  const addExpense = (expense) => {
+    dispachAuth({ type: "ADD",expense});
   };
   const fillProfile = (username, picUrl, isEmailVerified) => {
     dispachAuth({ type: "PROFILE", username, picUrl, isEmailVerified });
@@ -60,6 +67,7 @@ const AuthProvider = (props) => {
         token: authState.token,
         username: authState.username,
         picUrl: authState.picUrl,
+        expenses: authState.expenses,
         isFillProfile: authState.isFillProfile,
         isShowProfile: authState.isShowProfile,
         isEmailVerified: authState.isEmailVerified,
@@ -67,6 +75,7 @@ const AuthProvider = (props) => {
         login,
         logout,
         showProfile,
+        addExpense,
       }}
     >
       {props.children}

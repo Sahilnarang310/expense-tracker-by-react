@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Card from "../UI/Card";
+import { useAuth } from "../../store/auth-context";
 
 const ExpenseForm = (props) => {
+  const authCtx=useAuth();
   const [expenseAmt, setExpenesAmt] = useState("");
   const [expenseTitle, setExpenesTitle] = useState("");
   const [expenseDate, setExpenesDate] = useState("");
@@ -12,11 +14,12 @@ const ExpenseForm = (props) => {
   function submitHandler(e) {
     e.preventDefault();
     const expenseData = {
+      id:new Date().toISOString(),
       title: expenseTitle,
       amount: expenseAmt,
       date: new Date(expenseDate),
     };
-    props.onAddExpense(expenseData);
+    authCtx.addExpense(expenseData);
     setExpenesAmt("");
     setExpenesDate("");
     setExpenesTitle("");
@@ -42,7 +45,7 @@ const ExpenseForm = (props) => {
             ></input>
           </Card>
           <Card className="m-2 p-2 bg-slate-800 border border-cyan-200">
-            <label>Expense Title</label>
+            <label>Expense Desc</label>
             <input
               type="text"
               className="text-black m-2 p-1 px-3 rounded-lg"

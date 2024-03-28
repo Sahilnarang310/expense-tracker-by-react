@@ -1,20 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../UI/Card";
 import ExpenseFilter from "./ExpenseFilter";
 import ExpenseItem from "./ExpenseItems";
 import ExpenseChart from "./ExpenseChart";
-const Expense = ({ expenses }) => {
-  console.log(expenses);
+import { useAuth } from "../../store/auth-context";
+const Expense = (props) => {
+  const authCtx= useAuth()
   const [filteredYear, setFilteredYear] = useState("2023");
-  const [filteredExpense, setFilteredExpense] = useState(expenses);
+  const [filteredExpense, setFilteredExpense] = useState(authCtx.expenses);
   const filterChangeHandler = (selectedYear) => {
     setFilteredYear(selectedYear);
-    const filterExpense = expenses.filter((expense) => {
+    const filterExpense = authCtx.expenses.filter((expense) => {
       if (expense.date.getFullYear() == selectedYear) return expense;
     });
     setFilteredExpense(filterExpense);
     console.log(filterExpense);
   };
+  useEffect(()=>{
+    filterChangeHandler(filteredYear)
+  },[filteredYear,authCtx.expenses])
   console.log(filteredExpense);
   return (
     <Card className="p-4 rounded-lg mx-20 m-2 bg-slate-600">
@@ -22,12 +26,12 @@ const Expense = ({ expenses }) => {
         selected={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
-      <ExpenseChart expenses={expenses}/>
+      <ExpenseChart expenses={filteredExpense}/>
       {filteredExpense.length === 0 ? (
         <p className="text-white">No Expense Items</p>
       ) : (
-        expenses.map((expense, i) => (
-          <ExpenseItem key={i} expense={expense} />
+        filteredExpense.map((expense) => (
+          <ExpenseItem key={expense.id} expense={expense} />
         ))
       )}
     </Card>

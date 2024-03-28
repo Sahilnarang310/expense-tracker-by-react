@@ -8,11 +8,13 @@ const AuthContext = React.createContext({
   isShowProfile: false,
   username: "",
   picUrl: "",
+  expenses: [],
   isEmailVerified: false,
   fillProfile: (username, picUrl, isEmailVerified) => {},
   login: (email, token) => {},
   showProfile: () => {},
   logout: () => {},
+  addExpense:(expense)=>{},
 });
 export default AuthContext;
 
