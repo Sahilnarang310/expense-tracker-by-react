@@ -10,11 +10,16 @@ const AuthContext = React.createContext({
   picUrl: "",
   expenses: [],
   isEmailVerified: false,
+  isEdit: false,
+  editExpenseForm: {},
+  isFormVisible:false,
+  setIsFormVisible:()=>{},
   fillProfile: (username, picUrl, isEmailVerified) => {},
   login: (email, token) => {},
   showProfile: () => {},
   logout: () => {},
   addExpense:(expense)=>{},
+  editExpense:(expense)=>{},
 });
 export default AuthContext;
 

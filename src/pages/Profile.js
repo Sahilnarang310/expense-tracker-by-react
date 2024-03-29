@@ -43,6 +43,7 @@ const expensePageHandler=()=>{
     console.log(response);
     nameRef.current.value = "";
     picUrlRef.current.value = "";
+    navigate("expense");
   };
   return (
     <div className="mt-14 grid place-items-end">

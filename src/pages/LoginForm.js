@@ -1,15 +1,24 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import classes from "./Login.module.css";
 import axios from "axios";
 import { useAuth } from "../store/auth-context";
 import {  useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 const LoginForm = () => {
   const authCtx=useAuth()
   let navigate = useNavigate();;
-  const [isSign, setIsSign] = useState(false);
+  const [isSign, setIsSign] = useState(true);
   const [isSubmit, setIsSubmit] = useState(false);
+  useEffect(()=>{
+    const email=localStorage.getItem('email');
+    const token=localStorage.getItem('token');
+    if(email && token){
+      authCtx.login(email,token);
+      navigate('/home')
+    }
+  },[])
   const emailRef = useRef();
   const passwordRef = useRef();
   const cpasswordRef = useRef();
@@ -67,6 +76,7 @@ const LoginForm = () => {
   };
 
   return (
+    <>
     <section className={classes.auth}>
       <h1>{isSign ? "Login" : "Sign Up"}</h1>
       <form onSubmit={submithandler}>
@@ -109,6 +119,7 @@ const LoginForm = () => {
         </div>
       </form>
     </section>
+    </>
   );
 };
 
