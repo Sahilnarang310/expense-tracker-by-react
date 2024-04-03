@@ -1,6 +1,5 @@
 import React, { useReducer } from "react";
 import AuthContext from "./auth-context";
-import { useNavigate } from "react-router-dom";
 
 const defaultValues = {
   isLogin: false,

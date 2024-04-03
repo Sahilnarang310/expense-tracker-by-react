@@ -4,21 +4,23 @@ import classes from "./Login.module.css";
 import axios from "axios";
 import { useAuth } from "../store/auth-context";
 import {  useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store";
 
 const LoginForm = () => {
-  const authCtx=useAuth()
+  const authState=useSelector(state=>state.auth);
+  const dispatch=useDispatch()
   let navigate = useNavigate();;
   const [isSign, setIsSign] = useState(true);
   const [isSubmit, setIsSubmit] = useState(false);
-  useEffect(()=>{
-    const email=localStorage.getItem('email');
-    const token=localStorage.getItem('token');
-    if(email && token){
-      authCtx.login(email,token);
-      navigate('/home')
-    }
-  },[])
+  // useEffect(()=>{
+  //   const email=localStorage.getItem('email');
+  //   const token=localStorage.getItem('token');
+  //   if(email && token){
+  //     authState.login(email,token);
+  //     navigate('/home')
+  //   }
+  // },[])
   const emailRef = useRef();
   const passwordRef = useRef();
   const cpasswordRef = useRef();
@@ -64,7 +66,7 @@ const LoginForm = () => {
       cleanForm()
       setIsSubmit(false);
       if(isSign){
-        authCtx.login(email,idToken);
+        dispatch(authActions.login({email, idToken}));
         navigate("/home");
       }
     } catch (error) {
