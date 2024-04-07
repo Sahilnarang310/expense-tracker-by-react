@@ -2,13 +2,18 @@ import { useSelector } from 'react-redux';
 // import CartButton from './components/CartButton';
 
 const App = () => {
-  const isCartVisible = useSelector(state => state.cart.isVisible);
+  const cartItems = useSelector(state => state.cart.items);
 
   return (
     <div>
       <h1>My Online Store</h1>
-      <CartButton />
-      {isCartVisible && <p>Cart is visible!</p>}
+      {Object.keys(cartItems).map(id => (
+        <div key={id}>
+          <p>Item ID: {id}</p>
+          <p>Quantity: {cartItems[id].quantity}</p>
+        </div>
+      ))}
+      <CartButton id="1" />
     </div>
   );
 };

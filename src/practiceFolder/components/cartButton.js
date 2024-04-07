@@ -1,14 +1,14 @@
 import { useDispatch } from 'react-redux';
-import { toggleCart } from '../store/cartSlice';
+import { addToCart } from '../store/cartSlice';
 
-const CartButton = () => {
+const CartButton = ({ id }) => {
   const dispatch = useDispatch();
 
-  const toggleCartHandler = () => {
-    dispatch(toggleCart());
+  const addToCartHandler = () => {
+    dispatch(addToCart({ id, quantity: 1 }));
   };
 
-  return <button onClick={toggleCartHandler}>My Cart</button>;
+  return <button onClick={addToCartHandler}>Add to Cart</button>;
 };
 
 export default CartButton;

@@ -1,16 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/cartSlice';
 
-const cartSlice = createSlice({
-  name: 'cart',
-  initialState: {
-    isVisible: false
-  },
-  reducers: {
-    toggleCart(state) {
-      state.isVisible = !state.isVisible;
-    }
-  }
-});
+const CartButton = ({ id }) => {
+  const dispatch = useDispatch();
 
-export const { toggleCart } = cartSlice.actions;
-export default cartSlice.reducer;
+  const addToCartHandler = () => {
+    dispatch(addToCart({ id, quantity: 1 }));
+  };
+
+  return <button onClick={addToCartHandler}>Add to Cart</button>;
+};
+
+export default CartButton;
