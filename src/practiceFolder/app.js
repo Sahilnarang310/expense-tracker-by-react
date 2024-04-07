@@ -1,3 +1,4 @@
+// App.js
 import { useSelector } from 'react-redux';
 // import CartButton from './components/CartButton';
 
