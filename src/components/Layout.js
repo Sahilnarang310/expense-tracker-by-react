@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import { useAuth } from "../store/auth-context";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store";
 
 const Layout = () => {
-  const authCtx = useAuth();
+  const authState=useSelector(state=>state.auth);
+  const dispatch=useDispatch()
   const navigate=useNavigate();
+  useEffect(()=>{
+    const email=localStorage.getItem('email');
+    const idToken = localStorage.getItem("token");
+    dispatch(authActions.login({ email, idToken }));
+  },[])
   const loginPageHandler = () => {
     navigate("/");
-    authCtx.isLogin = false;
+    localStorage.clear();
+    dispatch(authActions.logout());
   };
   return (
     <>
-      {authCtx.isLogin ? (
+      {authState.isLogin ? (
         <div>
           <Header />
           <Outlet />

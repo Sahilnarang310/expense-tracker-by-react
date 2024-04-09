@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const nameRef = useRef();
   const picUrlRef = useRef();
-  const token=localStorage.getItem("token")
-const navigate = useNavigate();
-const expensePageHandler=()=>{
-  navigate('expense');
-}
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const expensePageHandler = () => {
+    navigate("expense");
+  };
   useEffect(() => {
     async function fetchData() {
       if (!token) {

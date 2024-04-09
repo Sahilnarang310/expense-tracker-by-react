@@ -14,7 +14,6 @@ const authSlice=createSlice({
             state.isLoginMode=!state.isLoginMode;
         },
         login(state,action){
-            console.log(action);
             state.email=action.payload.email;
             state.token=action.payload.idToken;
             state.isLogin=!!action.payload.idToken;
