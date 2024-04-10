@@ -3,19 +3,22 @@ import { useAuth } from "../../store/auth-context";
 import Card from "../UI/Card";
 import ExpenseDate from "./ExpenseDate";
 import ExpenseDetails from "./ExpenseDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { expenseActions } from "../../store";
 
 const ExpenseItem = ({ expense }) => {
-  console.log(expense);
-  const authCtx=useAuth();
+  const authState=useSelector(state=>state.auth);
+  const dispatch=useDispatch();
   const editHandler=(e)=>{
     e.target.parentElement.remove();
-    authCtx.editExpense(expense);
+    dispatch(expenseActions.editExpense(expense.id));
   }
   const deleteHandler =async (e) => {
-    const userPath=authCtx.email.split('@')[0];
+    const userPath=authState.email.split('@')[0];
     let response;
-    let url = `https://expense-tracker-cfb73-default-rtdb.firebaseio.com/${userPath}/${expense.id}.json`;
+    let url = `https://e-commerce-ae96e-default-rtdb.firebaseio.com/${userPath}/${expense.id}.json`;
     response= await axios.delete(url);
+    dispatch(expenseActions.deleteExpense(expense.id));
     e.target.parentElement.remove();
   };
   return (

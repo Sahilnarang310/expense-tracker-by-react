@@ -10,10 +10,8 @@ const Home = () => {
   const [show, setShow] = useState(true);
   const profileState = useSelector((state) => state.profile);
   const dispatch = useDispatch();
-  const authstate = useSelector((state) => state.auth);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const authCtx = useAuth();
 
   useEffect(() => {
     async function fetchData() {

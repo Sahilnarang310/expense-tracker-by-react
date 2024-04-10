@@ -13,6 +13,7 @@ const ForgetPassword =  (props) => {
     try {
       e.preventDefault();
       const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.REACT_APP_FIREBASE_API}`;
+      
       const obj = {
         email: emailRef.current.value,
         requestType: "PASSWORD_RESET",
